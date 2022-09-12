@@ -1,20 +1,11 @@
+#!/bin/bash
+
+cat <<EOF | kind create cluster --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
-  kubeadmConfigPatches:
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true"
   extraPortMappings:
-  # Ingress
-  - containerPort: 80
-    hostPort: 80
-  - containerPort: 443
-    hostPort: 443
-  # NodePort
   - containerPort: 30000
     hostPort: 30000
     listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
@@ -35,3 +26,4 @@ nodes:
     hostPort: 30007
   - containerPort: 30008
     hostPort: 30008
+EOF
